@@ -1,4 +1,11 @@
-FROM anapsix/alpine-java
-MAINTAINER sverze
-COPY target/jersey-service-1.1.0-SNAPSHOT-jar-with-dependencies.jar /home/jersey-service.jar
-CMD ["java","-jar","/home/jersey-service.jar"]
+FROM golang:1.10
+
+WORKDIR /go/src/helloworld
+COPY main.go .
+RUN go get -d -v ./...
+RUN go build
+
+RUN mkdir static
+COPY static/. static/.
+
+CMD ["/go/src/helloworld/helloworld"]
